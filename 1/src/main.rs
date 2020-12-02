@@ -2,13 +2,11 @@ use std::fs;
 
 const TARGET_SUM: i32 = 2020;
 
-// Find the two entries that sum to 2020; what do you get if you multiply them together?
 fn main() {
     let file_name = "src/input.txt";
 
     let file_data = fs::read_to_string(file_name).unwrap();
 
-    // convert numbers to ints
     let numbers: Vec<i32> = file_data
         .lines()
         .map(|s| s.parse().expect("parse error"))
@@ -20,10 +18,13 @@ fn main() {
         clone
     };
 
-    // let answer1 = find_answer_1(sorted_numbers.clone());
+    let answer1 = find_answer_1(sorted_numbers.clone());
 
-    // println!("The answers for problem 1 are: {}, {}", answer1.1, answer1.0);
-    // println!("Their product is: {}", answer1.1 * answer1.0);
+    println!(
+        "The answers for problem 1 are: {}, {}",
+        answer1.1, answer1.0
+    );
+    println!("Their product is: {}", answer1.1 * answer1.0);
 
     let answer2 = find_answer_2(sorted_numbers.clone());
 
@@ -60,12 +61,9 @@ fn find_answer_1(numbers: Vec<i32>) -> (i32, i32) {
 }
 
 fn find_answer_2(numbers: Vec<i32>) -> (i32, i32, i32) {
-    // for all but the last two (https://stackoverflow.com/a/48102761)
-    println!("{:?}", numbers);
-
     let mut result = (1, 2, 3);
 
-    for (i, n) in numbers.iter().take(numbers.len() - 2).enumerate() {
+    for (i, _) in numbers.iter().take(numbers.len() - 2).enumerate() {
         let mut left = i + 1;
         let mut right = numbers.len() - 1;
 
