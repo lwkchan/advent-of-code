@@ -1,5 +1,5 @@
 [package]
-name = "variables"
+name = "aoc-1"
 version = "0.1.0"
 authors = ["lwkchan <laurachan205@gmail.com>"]
 edition = "2018"
