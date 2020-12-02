@@ -7,11 +7,6 @@ use std::fs;
 // 1-3 b: cdefg
 // 2-9 c: ccccccccc
 
-// Password policy indicates the lost and highest number
-// of times a given letter must appear for a password to
-// be valid.  For example, 1-3 a means that the password
-// must contain a at least 1 time and at most 3 times.
-
 fn main() {
     let file_name = "src/input.txt";
 
@@ -71,18 +66,6 @@ fn find_answer_2(combinations: Vec<(i32, i32, char, &str)>) -> i32 {
             .chars()
             .nth((second_position as usize) - 1)
             .unwrap();
-
-        println!(
-            "{:?}",
-            (
-                first_position,
-                first_char,
-                second_position,
-                second_char,
-                expected_character,
-                password
-            )
-        );
 
         if first_char == expected_character && second_char != expected_character {
             result += 1;
