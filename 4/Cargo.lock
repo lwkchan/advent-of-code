@@ -23,6 +23,7 @@ name = "aoc-4"
 version = "0.1.0"
 dependencies = [
  "cargo-watch",
+ "regex",
 ]
 
 [[package]]
