@@ -133,19 +133,19 @@ fn check_fields_valid(document: &Vec<(&str, &str)>) -> bool {
     for (key, value) in document {
         match key.as_ref() {
             "byr" => {
-                if is_year_in_range(value, 2002, 1920) {
+                if is_year_in_range(value, 1920, 2002) {
                     continue;
                 }
                 is_all_fields_valid = false;
             }
             "iyr" => {
-                if is_year_in_range(value, 2020, 2010) {
+                if is_year_in_range(value, 2010, 2020) {
                     continue;
                 }
                 is_all_fields_valid = false;
             }
             "eyr" => {
-                if is_year_in_range(value, 2030, 2020) {
+                if is_year_in_range(value, 2020, 2030) {
                     continue;
                 }
                 is_all_fields_valid = false;
@@ -172,6 +172,8 @@ fn check_fields_valid(document: &Vec<(&str, &str)>) -> bool {
                     }
                     continue;
                 }
+
+                is_all_fields_valid = false;
             }
             "hcl" => {
                 let valid_pattern = Regex::new("#[0-9a-f]{6}$").unwrap();
@@ -201,7 +203,7 @@ fn check_fields_valid(document: &Vec<(&str, &str)>) -> bool {
     is_all_fields_valid
 }
 
-fn is_year_in_range(value: &str, upper: i32, lower: i32) -> bool {
+fn is_year_in_range(value: &str, lower: i32, upper: i32) -> bool {
     if value.len() != 4 {
         return false;
     }
