@@ -8,3 +8,7 @@ To run
 cd <folder-challenge-number>
 cargo run
 ```
+
+```
+CHALLENGE_NUMBER=<number> npm run watch
+```
