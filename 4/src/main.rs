@@ -172,8 +172,6 @@ fn check_fields_valid(document: &Vec<(&str, &str)>) -> bool {
                     }
                     continue;
                 }
-
-                is_all_fields_valid = false;
             }
             "hcl" => {
                 let valid_pattern = Regex::new("#[0-9a-f]{6}$").unwrap();
@@ -194,9 +192,14 @@ fn check_fields_valid(document: &Vec<(&str, &str)>) -> bool {
                 if valid_pattern.is_match(value) {
                     continue;
                 }
-                is_all_fields_valid = false
+                is_all_fields_valid = false;
             }
             _ => {} // do nothing
+        }
+
+        // already false so don't continue checking
+        if is_all_fields_valid == false {
+            break;
         }
     }
 
