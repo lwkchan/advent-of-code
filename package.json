@@ -6,7 +6,7 @@
   "author": "lwkchan <laurachan205@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "watch": "nodemon --watch $CHALLENGE_NUMBER/*.ts --ignore $CHALLENGE_NUMBER/*.test.ts --exec \"ts-node\" $CHALLENGE_NUMBER/index.ts"
+    "watch": "nodemon --watch $CHALLENGE_NUMBER/*.ts --ignore $CHALLENGE_NUMBER/__tests__/*.test.ts --exec \"ts-node\" $CHALLENGE_NUMBER/index.ts"
   },
   "devDependencies": {
     "@types/jest": "^26.0.16",

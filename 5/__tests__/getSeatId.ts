@@ -1,4 +1,4 @@
-import { getSeatId } from '.';
+import { getSeatId } from '..';
 
 describe('getSeatId', () => {
   it('returns the correct seat IDs', () => {
