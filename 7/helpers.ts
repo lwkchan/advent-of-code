@@ -44,7 +44,7 @@ export const parseLine = (
   };
 };
 
-export const findNumberOfPossibleOuterBags = (
+export const findPossibleOuterBags = (
   bagColorToFind: string,
   bagCombinationsConfig: {
     [key: string]: { [key: string]: number };
@@ -62,15 +62,31 @@ export const findNumberOfPossibleOuterBags = (
 
       possibleOuterBags = [
         ...possibleOuterBags,
-        ...findNumberOfPossibleOuterBags(
-          outerBag,
-          bagCombinationsConfig
-        ).filter((bagToAdd) => !possibleOuterBags.includes(bagToAdd)),
+        ...findPossibleOuterBags(outerBag, bagCombinationsConfig).filter(
+          (bagToAdd) => !possibleOuterBags.includes(bagToAdd)
+        ),
       ];
     }
   });
 
   return possibleOuterBags;
+};
+
+export const getNumberOfTotalBags = (
+  topBagColor: string,
+  bagCombinationsConfig: {
+    [key: string]: { [key: string]: number };
+  }
+): number => {
+  let total = 0;
+
+  const contents = bagCombinationsConfig[topBagColor];
+  Object.entries(contents).forEach(([type, count]) => {
+    total += count;
+    total += getNumberOfTotalBags(type, bagCombinationsConfig) * count;
+  });
+
+  return total;
 };
 
 const data = readFileSync(path.join(__dirname, 'input.txt'), 'utf8');
@@ -82,9 +98,13 @@ const formattedData: { [key: string]: { [key: string]: number } } = data
   .reduce((acc, parsedLine) => ({ ...acc, ...parsedLine }), {});
 
 export const printAnswer1 = () => {
-  const answer = findNumberOfPossibleOuterBags(MY_BAG_COLOR, formattedData);
+  const answer = findPossibleOuterBags(MY_BAG_COLOR, formattedData);
 
   console.log(answer.length);
 };
 
-export const printAnswer2 = () => {};
+export const printAnswer2 = () => {
+  const answer = getNumberOfTotalBags(MY_BAG_COLOR, formattedData);
+
+  console.log(answer);
+};
