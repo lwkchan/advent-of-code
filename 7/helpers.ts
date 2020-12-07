@@ -1,5 +1,7 @@
 import fs, { readFileSync } from 'fs';
-import path from 'path';
+import path, { parse } from 'path';
+
+const MY_BAG_COLOR = 'shiny gold';
 
 // 'light red bags contain 1 bright white bag, 2 muted yellow bags.'
 // => {'light red': {'bright white': 1, 'muted yellow': 2}}
@@ -25,9 +27,13 @@ export const parseLine = (
         .trim();
 
       const numberString = requiredInfo.match(/[0-9]/g)?.join('');
-      const number = parseInt(numberString as string, 10);
+      const number = numberString ? parseInt(numberString, 10) : undefined;
 
-      innerBagsConfig[bagColor as string] = number;
+      // handle when requiredInfo string is "contain no other bags", where there is no number present
+      if (number) {
+        innerBagsConfig[bagColor as string] = number;
+      }
+      return;
     } catch (e) {
       console.log(`Parsing failed for ${string} in ${line}`);
     }
@@ -38,8 +44,47 @@ export const parseLine = (
   };
 };
 
+export const findNumberOfPossibleOuterBags = (
+  bagColorToFind: string,
+  bagCombinationsConfig: {
+    [key: string]: { [key: string]: number };
+  }
+): string[] => {
+  let possibleOuterBags: string[] = [];
+
+  Object.keys(bagCombinationsConfig).forEach((outerBag) => {
+    const possibleInnerBags = Object.keys(bagCombinationsConfig[outerBag]);
+    if (possibleInnerBags.includes(bagColorToFind)) {
+      possibleOuterBags = [
+        ...possibleOuterBags,
+        ...(possibleOuterBags.includes(outerBag) ? [] : [outerBag]),
+      ];
+
+      possibleOuterBags = [
+        ...possibleOuterBags,
+        ...findNumberOfPossibleOuterBags(
+          outerBag,
+          bagCombinationsConfig
+        ).filter((bagToAdd) => !possibleOuterBags.includes(bagToAdd)),
+      ];
+    }
+  });
+
+  return possibleOuterBags;
+};
+
 const data = readFileSync(path.join(__dirname, 'input.txt'), 'utf8');
 
-export const printAnswer1 = () => {};
+const formattedData: { [key: string]: { [key: string]: number } } = data
+  .split('\n')
+  .filter((line) => line !== '')
+  .map((line) => parseLine(line))
+  .reduce((acc, parsedLine) => ({ ...acc, ...parsedLine }), {});
+
+export const printAnswer1 = () => {
+  const answer = findNumberOfPossibleOuterBags(MY_BAG_COLOR, formattedData);
+
+  console.log(answer.length);
+};
 
 export const printAnswer2 = () => {};

@@ -17,4 +17,11 @@ describe('parseLine', () => {
       'light red': { 'bright white': 13, 'muted yellow': 233 },
     });
   });
+  it('parses a line from the input correctly when a bag cannot contain another bag', () => {
+    const input = 'dotted black bags contain no other bags.';
+
+    expect(parseLine(input)).toEqual({
+      'dotted black': {},
+    });
+  });
 });
