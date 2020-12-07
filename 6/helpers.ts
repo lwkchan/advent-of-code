@@ -1,7 +1,6 @@
 import fs, { readFileSync } from 'fs';
 import path from 'path';
 
-// returns array of arrays,
 export const formatData = (data: string): string[][] => {
   const result: string[][] = [];
   let currentGroup: string[] = [];
@@ -75,8 +74,7 @@ export const countAgreedYesAnswersPerGroup = (
 
     const countedGroupAnswers = calculateGroupAnswers(groupAnswer);
 
-    // then, for each key in the countedGroupAnswers, we count how many times the value === groupSize
-
+    // then, for each key in the countedGroupAnswers, we count how many times the number of times answered yes === groupSize
     const answerKeys = Object.keys(countedGroupAnswers);
     answerKeys.forEach((key) => {
       if (countedGroupAnswers[key] === groupSize) {
