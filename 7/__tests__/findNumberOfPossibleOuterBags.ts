@@ -1,6 +1,6 @@
-import { findNumberOfPossibleOuterBags } from '../helpers';
+import { findPossibleOuterBags } from '../helpers';
 
-describe('findNumberOfPossibleOuterBags', () => {
+describe('findPossibleOuterBags', () => {
   it('correctly finds the possible number of outer bags for the provided example', () => {
     const bagCombinationsConfig = {
       'light red': { 'bright white': 1, 'muted yellow': 2 },
@@ -17,7 +17,7 @@ describe('findNumberOfPossibleOuterBags', () => {
     const bagToFind = 'shiny gold';
 
     expect(
-      findNumberOfPossibleOuterBags(bagToFind, bagCombinationsConfig)
+      findPossibleOuterBags(bagToFind, bagCombinationsConfig)
     ).toHaveProperty('length', 4);
   });
 });

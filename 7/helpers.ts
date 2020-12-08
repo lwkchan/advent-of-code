@@ -44,32 +44,40 @@ export const parseLine = (
   };
 };
 
+export const canContainBag = (
+  bagColorToFind: string,
+  bagToLookIn: string,
+  bagCombinationsConfig: {
+    [key: string]: { [key: string]: number };
+  }
+): boolean => {
+  const currentBagContents = Object.keys(bagCombinationsConfig[bagToLookIn]);
+
+  if (currentBagContents.length === 0) {
+    return false;
+  }
+  if (currentBagContents.includes(bagColorToFind)) {
+    return true;
+  }
+
+  const isContainedInInnerBag = currentBagContents.reduce((acc, innerBag) => {
+    return canContainBag(bagColorToFind, innerBag, bagCombinationsConfig);
+  }, false);
+
+  return isContainedInInnerBag;
+};
+
 export const findPossibleOuterBags = (
   bagColorToFind: string,
   bagCombinationsConfig: {
     [key: string]: { [key: string]: number };
   }
 ): string[] => {
-  let possibleOuterBags: string[] = [];
+  const allBags = Object.keys(bagCombinationsConfig);
 
-  Object.keys(bagCombinationsConfig).forEach((outerBag) => {
-    const possibleInnerBags = Object.keys(bagCombinationsConfig[outerBag]);
-    if (possibleInnerBags.includes(bagColorToFind)) {
-      possibleOuterBags = [
-        ...possibleOuterBags,
-        ...(possibleOuterBags.includes(outerBag) ? [] : [outerBag]),
-      ];
-
-      possibleOuterBags = [
-        ...possibleOuterBags,
-        ...findPossibleOuterBags(outerBag, bagCombinationsConfig).filter(
-          (bagToAdd) => !possibleOuterBags.includes(bagToAdd)
-        ),
-      ];
-    }
-  });
-
-  return possibleOuterBags;
+  return allBags.filter((bag) =>
+    canContainBag(bagColorToFind, bag, bagCombinationsConfig)
+  );
 };
 
 export const getNumberOfTotalBags = (
