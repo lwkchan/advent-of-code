@@ -119,8 +119,6 @@ export const printAnswer2 = () => {
   const validInstructions = possibleCombinations.find((i) =>
     isValidInstructions(i)
   );
-  console.log(validInstructions);
-
   const sum = getAccumulatorSum(validInstructions as Instruction[]);
   console.log(sum);
 };
