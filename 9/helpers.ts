@@ -1,7 +1,5 @@
-import fs, { readFileSync } from 'fs';
-import path, { format, parse } from 'path';
-
-const MY_BAG_COLOR = 'shiny gold';
+import { readFileSync } from 'fs';
+import path from 'path';
 
 const data = readFileSync(path.join(__dirname, 'input.txt'), 'utf8');
 
@@ -36,6 +34,38 @@ const canTargetSumFromArray = (
   return result;
 };
 
+const findSequenceWhichSumsToTarget = (
+  sequence: number[],
+  target: number
+): number[] => {
+  // start at the bottom;
+  // collect numbers from below first to create a sequence of 2 or more
+  // for each sequence, get the sum
+  // if the sum === target, then break and that's the result
+  // if the sum < target, move the upper index +1
+  // if the sum > target, remove the bottom number from the sequence;
+
+  let bottomIndex = 0;
+  let topIndex = 1;
+  let currentSequenceSum = 0;
+
+  while (currentSequenceSum !== target) {
+    currentSequenceSum = sequence
+      .slice(bottomIndex, topIndex + 1)
+      .reduce((a, b) => a + b, 0);
+
+    if (currentSequenceSum < target) {
+      topIndex += 1;
+    }
+
+    if (currentSequenceSum > target) {
+      bottomIndex += 1;
+    }
+  }
+
+  return sequence.slice(bottomIndex, topIndex + 1);
+};
+
 const numbersData: number[] = data
   .split('\n')
   .filter((line) => line !== '')
@@ -53,5 +83,17 @@ export const printAnswer1 = () => {
 };
 
 export const printAnswer2 = () => {
-  // find two numbers which sum to 104054607
+  const target = 104054607;
+
+  const sequenceWhichSumsToTarget = findSequenceWhichSumsToTarget(
+    numbersData,
+    target
+  );
+
+  const [min, max] = [
+    Math.min(...sequenceWhichSumsToTarget),
+    Math.max(...sequenceWhichSumsToTarget),
+  ];
+
+  console.log(min + max);
 };
